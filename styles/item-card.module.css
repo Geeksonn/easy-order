@@ -1,0 +1,46 @@
+.itemCard {
+    min-width: 140px;
+    max-width: 140px;
+    margin: 10px 10px;
+    border: 1px solid grey;
+    border-radius: 20px;
+}
+
+.itemImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.itemName, .itemQuantity {
+    padding: 2px 0px;
+    font-size: small;
+}
+
+.itemName {
+    text-align: center;
+    border-top: 1px dashed lightgray;
+    border-bottom: 1px dashed lightgray;
+}
+
+.itemQuantity {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quantity {
+    width: 30px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: coral;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px 0px;
+}
+
+.image {
+    border-radius: 20px;
+}
