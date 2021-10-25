@@ -20,7 +20,7 @@ class Home extends React.Component {
     this.itemClicked = this.itemClicked.bind(this);
   }
 
-  static async getInitialProps(context) {
+  static async getInitialProps() {
     const items = await getItems();
 
     return {
