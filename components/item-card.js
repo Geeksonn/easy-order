@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
 import styles from '../styles/item-card.module.css';
@@ -8,10 +8,6 @@ export default function ItemCard({ index, item, quantity, cardClick }) {
     const IMG_SIZE = 130;
 
     const { name, image } = item;
-
-    //<div className={styles.itemCard} onClick={() => setQuantity(quantity + 1)}>
-
-
 
     return (
         <div className={styles.itemCard} onClick={() => cardClick(index, item)}>

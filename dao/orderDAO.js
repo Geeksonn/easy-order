@@ -18,7 +18,6 @@ export default class OrderDAO {
     }
 
     static async getOrders(sort = { date: -1 }) {
-        console.log('sort ? ', sort);
         const { db } = await connectToDatabase();
 
         return await db

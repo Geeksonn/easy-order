@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { render } from 'react-dom';
-import ItemCard from '../components/item-card'
-import { getItems } from '../lib/items'
-import styles from '../styles/Home.module.css'
+import React from 'react';
+import Button from '../components/button';
+import ItemCard from '../components/item-card';
+import { getItems } from '../lib/items';
+import { addOrder } from '../lib/orders';
+import styles from '../styles/Home.module.css';
 
 class Home extends React.Component {
   constructor(props) {
@@ -18,6 +19,8 @@ class Home extends React.Component {
     };
 
     this.itemClicked = this.itemClicked.bind(this);
+    this.order = this.order.bind(this);
+    this.resetCart = this.resetCart.bind(this);
   }
 
   static async getInitialProps() {
@@ -32,8 +35,8 @@ class Home extends React.Component {
 
   itemClicked(index, item) {
     let { totalPrice, quantityArray, cart } = this.state;
-    
-    this.setState({ 
+
+    this.setState({
       totalPrice: totalPrice + item.price,
       quantityArray: quantityArray.map((qty, ind) => {
         return ind === index ? ++qty : qty;
@@ -42,14 +45,48 @@ class Home extends React.Component {
     });
   }
 
+  order() {
+    const { cart, totalPrice } = this.state;
+
+    if (cart.length > 0) {
+      const order = {
+        date: new Date(),
+        totalPrice: totalPrice,
+        currency: cart[0].currency,
+        items: cart
+      }
+
+      addOrder(order);
+    }
+    else {
+      console.log('Nothing to order.');
+    }
+
+    this.resetCart();
+  }
+
+  resetCart() {
+    this.setState({
+      cart: [],
+      totalPrice: 0,
+      quantityArray: this.state.quantityArray.map(item => { return 0 })
+    });
+  }
+
   render() {
     return (
-      <div className={styles.main} >
-        {
-          this.state.items.map((item, index) => {
-            return (<ItemCard key={index} index={index} item={item} quantity={this.state.quantityArray[index]} cardClick={this.itemClicked} />);
-          })
-        }
+      <div>
+        <div className={styles.main} >
+          {
+            this.state.items.map((item, index) => {
+              return (<ItemCard key={index} index={index} item={item} quantity={this.state.quantityArray[index]} cardClick={this.itemClicked} />);
+            })
+          }
+        </div>
+        <div className={styles.main}>
+          <Button severity='success' text='Commander' onClick={this.order} />
+          <Button severity='error' text='Annuler' onClick={this.resetCart} />
+        </div>
       </div>
     );
   }
