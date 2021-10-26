@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../components/button';
 import ItemCard from '../components/item-card';
+import OrderSummary from '../components/order-summary';
 import { getItems } from '../lib/items';
 import { addOrder } from '../lib/orders';
 import styles from '../styles/Home.module.css';
@@ -84,8 +85,9 @@ class Home extends React.Component {
           }
         </div>
         <div className={styles.main}>
-          <Button severity='success' text='Commander' onClick={this.order} />
           <Button severity='error' text='Annuler' onClick={this.resetCart} />
+          <OrderSummary cart={this.state.cart} totalPrice={this.state.totalPrice} />
+          <Button severity='success' text='Commander' onClick={this.order} />
         </div>
       </div>
     );

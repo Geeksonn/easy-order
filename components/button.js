@@ -11,7 +11,7 @@ export default function Button({ severity, text, onClick }) {
 
     return (
         <div className={buttonStyle} onClick={onClick}>
-            <p>{text}</p>
+            <p className={styles.buttonText}>{text}</p>
         </div>
     )
 }
