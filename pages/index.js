@@ -51,7 +51,6 @@ class Home extends React.Component {
 
     if (cart.length > 0) {
       const order = {
-        date: new Date(),
         totalPrice: totalPrice,
         currency: cart[0].currency,
         items: cart

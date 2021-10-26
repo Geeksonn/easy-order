@@ -6,6 +6,7 @@ export default class OrderController {
     }
 
     static async addOrder(order) {
+        order.date = new Date();
         const { ops } = await OrderDAO.addOrder(order);
         return ops[0];
     }
