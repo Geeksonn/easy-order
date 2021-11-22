@@ -1,20 +1,23 @@
 .button {
-    min-width: 120px;
-    height: 40px;
+    padding: 1rem 3rem 1rem 3rem;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 0.25rem;
     margin: 0px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.normal {
+    background-color: #0d6efd;
+}
+
 .success {
-    background-color: rgb(58, 148, 58);
+    background-color: #198754;
 }
 
 .error {
-    background-color: rgb(212, 55, 55);
+    background-color: #dc3545;
 }
 
 .buttonText {

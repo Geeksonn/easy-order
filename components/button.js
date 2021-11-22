@@ -5,8 +5,11 @@ export default function Button({ severity, text, onClick }) {
     if (severity === 'success') {
         buttonStyle = buttonStyle + styles.success;
     }
-    else {
+    else if (severity === 'error') {
         buttonStyle = buttonStyle + styles.error;
+    }
+    else {
+        buttonStyle = buttonStyle + styles.normal;
     }
 
     return (
