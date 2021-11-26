@@ -107,4 +107,19 @@ export default class UserController {
             token: token
         };
     }
+
+    static async checkToken(token) {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            if (decoded._id) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch(err) {
+            return false;
+        }
+    }
 }
