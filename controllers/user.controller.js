@@ -56,6 +56,7 @@ export default class UserController {
 
         user.dateCreated = new Date();
         user.password = bcrypt.hashSync(password, saltRounds);
+        user.validated = false;
 
         const { ops } = await UserDAO.createUser(user);
 
@@ -111,7 +112,7 @@ export default class UserController {
     static async checkToken(token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            if (decoded._id) {
+            if (decoded.validated) {
                 return true;
             }
             else {
