@@ -58,11 +58,11 @@ export default class UserController {
         user.password = bcrypt.hashSync(password, saltRounds);
         user.validated = false;
 
-        const { ops } = await UserDAO.createUser(user);
+        const result = await UserDAO.createUser(user);
 
         return {
             status: 201,
-            user: ops[0]
+            result: result
         };
     }
 

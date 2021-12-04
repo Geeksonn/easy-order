@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
         const result = await UserController.createUser(req.body);
         
-        const response = result.status === 201 ? result.user : result.error;
+        const response = result.status === 201 ? result.result : {error: result.error};
 
         res.status(result.status).json(response);
     }

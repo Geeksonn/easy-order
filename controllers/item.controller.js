@@ -6,8 +6,7 @@ export default class ItemController {
     }
 
     static async addItems(items) {
-        const { ops } = await ItemDAO.addItems(items);
-        return ops;
+        return await ItemDAO.addItems(items);
     }
 
     static async deleteItem(itemID) {
