@@ -1,6 +1,7 @@
-.main {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 20px;
+.itemsWrapper {
+    @apply flex flex-wrap justify-center space-x-6 items-center mt-7 px-14;
+}
+
+.summary {
+  @apply flex flex-wrap justify-center space-x-5 items-center mt-7 mx-auto;
 }

@@ -1,4 +1,7 @@
 .container {
+    @apply flex justify-between items-center;
+    @apply rounded-md border border-gray-200 px-5 py-2 w-80;
+    /*
     width: 40%;
     height: 40px;
     border: 1px solid grey;
@@ -6,5 +9,5 @@
     display: flex;
     align-items: center;
     padding: 10px;
+    */
 }
-

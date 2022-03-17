@@ -7,8 +7,13 @@ export default function OrderSummary({ cart, totalPrice }) {
     return (
         <div className={styles.container}>
             <p>
-                Items in cart: <strong>{ totalItems }</strong><br/>
-                Total amount: <strong>{ totalPrice } { currency }</strong>
+                Items in cart: <strong>{totalItems}</strong>
+            </p>
+            <p>
+                Total amount:{' '}
+                <strong>
+                    {totalPrice} {currency}
+                </strong>
             </p>
         </div>
     );

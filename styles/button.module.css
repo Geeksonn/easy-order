@@ -1,26 +1,15 @@
 .button {
-    padding: 1rem 3rem 1rem 3rem;
-    cursor: pointer;
-    border-radius: 0.25rem;
-    margin: 0px 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @apply p-2 w-40 rounded-md cursor-pointer text-center text-white my-2;
 }
 
 .normal {
-    background-color: #0d6efd;
+    @apply bg-blue-600;
 }
 
 .success {
-    background-color: #198754;
+    @apply bg-green-700;
 }
 
 .error {
-    background-color: #dc3545;
-}
-
-.buttonText {
-    margin: 0px 10px;
-    color: white;
+    @apply bg-red-600;
 }
