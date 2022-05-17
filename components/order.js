@@ -1,15 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import Button from '../components/button';
 import ItemCard from '../components/item-card';
 import OrderSummary from '../components/order-summary';
-import authContext from '../contexts/token';
+import { getItems } from '../lib/items';
 import { addOrder } from '../lib/orders';
 import styles from '../styles/order.module.css';
+import Context from './context';
 
-const Order = ({ items }) => {
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [cart, setCart] = useState([]);
-    const { token } = useContext(authContext);
+const Order = () => {
+    const [totalPrice, setTotalPrice] = React.useState(0);
+    const [cart, setCart] = React.useState([]);
+    const [items, setItems] = React.useState([]);
+    const { tokenCtx } = React.useContext(Context);
+    const { token } = tokenCtx;
+
+    React.useEffect(async () => {
+        setItems(await getItems(token));
+    }, [JSON.stringify(items)]);
 
     const itemClicked = (index, item) => {
         setTotalPrice(totalPrice + item.price);

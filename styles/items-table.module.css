@@ -1,0 +1,24 @@
+.wrapper {
+    @apply w-screen p-10;
+}
+
+.tableWrapper {
+    @apply inline-block min-w-full shadow rounded-lg overflow-hidden
+}
+
+.tableWrapper table {
+    @apply w-full;
+}
+
+.headCell {
+    @apply px-4 py-3 border-b-2 border-gray-200 bg-gray-100;
+    @apply text-left text-xs font-semibold text-gray-600 uppercase tracking-wider;
+}
+
+.cell {
+    @apply px-4 py-3 border-b border-gray-200 bg-white text-sm;
+}
+
+.bottomTable {
+    @apply mt-5 ml-3;
+}

@@ -1,21 +1,34 @@
 import React, { useContext, useState } from 'react';
-import Button from './button';
 
 import { authenticate } from '../lib/auth';
 
 import styles from '../styles/login.module.css';
-import authContext from '../contexts/token';
+import Context from './context';
+import { Button } from 'geekson-ui';
 
-const Login = ({ loginMethod }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+const Login = () => {
+    const usernameInput = React.useRef();
+    const passwordInput = React.useRef();
+    const { tokenCtx } = React.useContext(Context);
+    const { setToken } = tokenCtx;
+
+    const auth = async () => {
+        console.log('auth triggered !');
+        const authInfo = {
+            username: usernameInput.current.value,
+            password: passwordInput.current.value
+        };
+        
+        const newToken = await authenticate(authInfo);
+        setToken(newToken);
+    }
 
     return (
         <div className={styles.container}>
             <div className={styles.login}>
-                <input placeholder="Username" id="username" value={username} onChange={e => setUsername(e.target.value)} className={styles.field} type="text" />
-                <input placeholder="Password" id="password" value={password} onChange={e => setPassword(e.target.value)} className={styles.field} type="password" />
-                <Button severity='normal' text='Login' onClick={() => loginMethod(username, password)} />
+                <input ref={usernameInput} placeholder="Username" id="username" className={styles.field} type="text" />
+                <input ref={passwordInput} placeholder="Password" id="password" className={styles.field} type="password" />
+                <button severity='normal' onClick={() => auth()}>Login</button>
             </div>
         </div>
     );
