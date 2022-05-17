@@ -1,5 +1,9 @@
 .itemCard {
-    @apply flex flex-col justify-center items-center mb-6 rounded-lg shadow-around;
+    @apply flex flex-col justify-center items-center mx-2 mb-6 rounded-lg shadow-around;
+}
+
+.itemName {
+    @apply w-52 mx-auto text-sm font-semibold text-center;
 }
 
 .itemImage {

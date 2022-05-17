@@ -10,6 +10,7 @@ export default function ItemCard({ index, item, quantity, cardClick }) {
 
     return (
         <div className={css.itemCard} onClick={() => cardClick(index, item)}>
+            <div className={css.itemName}>{name}</div>
             <img className={css.itemImage} src={'/' + image} />
             <div className={css.itemQuantity}>{quantity}</div>
         </div>

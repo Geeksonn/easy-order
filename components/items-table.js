@@ -14,22 +14,21 @@ const ItemsTable = () => {
     const [showModal, setShowModal] = React.useState(false);
     const [selectedItem, setSelectedItem] = React.useState();
     const [items, setItems] = React.useState([]);
-
-    const emptyItem = {
-        name: '',
-        image: '',
-        price: '',
-        currency: '',
-    };
+    const [defCurrency, setDefCurrency] = React.useState();
 
     React.useEffect(async () => {
         const retrievedItems = await API.getItems(token);
-        emptyItem.currency = retrievedItems[0].currency;
+        setDefCurrency(retrievedItems[0].currency);
         setItems(retrievedItems);
     }, [JSON.stringify(items)]);
 
     const addNew = () => {
-        setSelectedItem(emptyItem);
+        setSelectedItem({
+            name: '',
+            image: '',
+            price: '',
+            currency: defCurrency,
+        });
         setShowModal(true);
     };
 
@@ -41,7 +40,7 @@ const ItemsTable = () => {
     const delItem = (itemID) => {
         const isDeleted = API.deleteItem(token, itemID);
         if (isDeleted) {
-            setItems(items.filter(item => item._id !== itemID));
+            setItems(items.filter((item) => item._id !== itemID));
         }
     };
 
@@ -49,7 +48,16 @@ const ItemsTable = () => {
         if ('_id' in selectedItem) {
             delItem(selectedItem._id);
         }
-        const newItemID = await API.putItems(token, item);
+        
+        // Hack for keeping the fields in the right order
+        const newItem = {
+            _id: item._id,
+            name: item.name,
+            image: item.image,
+            price: item.price,
+            currency: 'token',
+        };
+        const newItemID = await API.putItems(token, newItem);
         item._id = newItemID[0];
         setItems([...items, item]);
         setShowModal(false);
@@ -96,10 +104,14 @@ const ItemsTable = () => {
                         <tr key={index}>
                             {buildRowCells(row, index)}
                             <td key={'edit-' + index} className={css.cell}>
-                                <button onClick={() => modifyItem(row)}>edit</button>
+                                <button onClick={() => modifyItem(row)}>
+                                    edit
+                                </button>
                             </td>
                             <td key={'delete-' + index} className={css.cell}>
-                                <button onClick={() => delItem(row._id)}>delete</button>
+                                <button onClick={() => delItem(row._id)}>
+                                    delete
+                                </button>
                             </td>
                         </tr>
                     );
@@ -119,7 +131,12 @@ const ItemsTable = () => {
             <div className={css.bottomTable}>
                 <Button severity='normal' text='+ Add' onClick={addNew} />
             </div>
-            <ItemModal item={selectedItem} show={showModal} save={saveItem} close={() => setShowModal(false)} />
+            <ItemModal
+                item={selectedItem}
+                show={showModal}
+                save={saveItem}
+                close={() => setShowModal(false)}
+            />
         </div>
     );
 };

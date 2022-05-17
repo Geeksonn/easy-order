@@ -46,9 +46,6 @@ const ItemForm = ({ save, cancel, item }) => {
             </div>
         </div>
     );
-    /*
-
-                */
 };
 
 export default ItemForm;

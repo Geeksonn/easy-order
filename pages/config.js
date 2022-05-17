@@ -10,7 +10,11 @@ const Config = () => {
     const { token } = tokenCtx;
 
     if (!token) {
-        return <Login />;
+        return (
+            <Layout>
+                <Login />
+            </Layout>
+        );
     } else {
         return (
             <Layout>

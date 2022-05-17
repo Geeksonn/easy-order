@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 
 import Login from '../components/login';
 import Order from '../components/order';
@@ -7,11 +7,15 @@ import Link from 'next/link';
 import Layout from '../components/layout';
 
 const Home = () => {
-    const { tokenCtx } = useContext(Context);
+    const { tokenCtx } = React.useContext(Context);
     const { token } = tokenCtx;
 
     if (!token) {
-        return <Login />;
+        return (
+            <Layout>
+                <Login />
+            </Layout>
+        );
     } else {
         return (
             <Layout>

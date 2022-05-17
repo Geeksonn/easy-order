@@ -20,10 +20,14 @@ export default class ItemDAO {
 
     static async getItems() {
         const { db } = await connectToDatabase();
+        const query = {};
+        const options = {
+            sort: { name: 1}
+        };
 
         return await db
             .collection(this.getCollectionName())
-            .find()
+            .find(query, options)
             .toArray();
     }
 
