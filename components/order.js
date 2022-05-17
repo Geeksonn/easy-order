@@ -19,6 +19,8 @@ const Order = () => {
     }, [JSON.stringify(items)]);
 
     const itemClicked = (index, item) => {
+        console.log('item: ', item);
+        //setTotalPrice(totalPrice + Number(item.price));
         setTotalPrice(totalPrice + item.price);
         setCart([...cart, item]);
     };

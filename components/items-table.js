@@ -54,7 +54,7 @@ const ItemsTable = () => {
             _id: item._id,
             name: item.name,
             image: item.image,
-            price: item.price,
+            price: Number(item.price),
             currency: 'token',
         };
         const newItemID = await API.putItems(token, newItem);
