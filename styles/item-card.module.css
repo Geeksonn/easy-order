@@ -1,5 +1,5 @@
 .itemCard {
-    @apply flex flex-col justify-center items-center mx-2 mb-6 rounded-lg shadow-around;
+    @apply flex flex-col justify-center items-center mx-2 /*mb-3*/ my-2 rounded-lg shadow-around;
 }
 
 .itemName {
