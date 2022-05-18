@@ -3,11 +3,11 @@
 }
 
 .itemName {
-    @apply w-44 mx-auto text-sm font-semibold text-center;
+    @apply w-44 mx-auto text-xs font-semibold text-center;
 }
 
 .itemImage {
-    @apply w-32 h-32 m-2 rounded-md;
+    @apply w-32 h-32 m-1 rounded-md;
 }
 
 .itemQuantity {
