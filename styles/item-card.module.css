@@ -3,7 +3,7 @@
 }
 
 .itemName {
-    @apply w-52 mx-auto text-sm font-semibold text-center;
+    @apply w-44 mx-auto text-sm font-semibold text-center;
 }
 
 .itemImage {
