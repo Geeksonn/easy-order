@@ -11,5 +11,5 @@
 }
 
 .itemQuantity {
-    @apply rounded-md bg-orange-200 px-1 w-10 text-center mb-2;
+    @apply rounded-md bg-orange-200 px-1 w-10 text-center text-xs mb-1;
 }
