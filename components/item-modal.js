@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import ItemForm from './item-form';
 
 const ItemModal = ({ show, save, close, item }) => {
-    const modalTitle = item ? 'Modify an item' : 'Add an item';
+    const modalTitle = item?.name ? 'Modify an item' : 'Add an item';
 
     const saveItem = (itemData) => {
         save(itemData);

@@ -8,16 +8,15 @@
     "start": "next start"
   },
   "dependencies": {
-    "@geekson/mongodb-connector": "^2.1.0",
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.6",
-    "axios": "^0.24.0",
-    "bcrypt": "^5.0.0",
-    "geekson-ui": "^0.2.0",
-    "jsonwebtoken": "^8.5.1",
+    "@uploadcare/rest-client": "^4.3.1",
+    "@uploadcare/upload-client": "^4.3.1",
+    "geekson-ui": "^0.4.1",
     "next": "^12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "realm-web": "^1.7.1",
     "slugify": "^1.6.3"
   },
   "devDependencies": {

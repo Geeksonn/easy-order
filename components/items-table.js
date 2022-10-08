@@ -1,33 +1,28 @@
 import React from 'react';
 
-import * as API from '../lib/items';
+import * as API from '@lib/items/items';
 
-import Button from './button';
+import { TrashIcon, PencilIcon } from '@heroicons/react/outline';
+import { Button, Spinner } from 'geekson-ui';
 import ItemModal from './item-modal';
 
-import css from '../styles/items-table.module.css';
-import Context from './context';
+import css from '@styles/config-page.module.css';
+import DataTable from './dataTable';
 
-const ItemsTable = () => {
-    const { tokenCtx } = React.useContext(Context);
-    const { token } = tokenCtx;
+const ItemsTable = ({ items, currency, activeEdition, refreshData }) => {
     const [showModal, setShowModal] = React.useState(false);
     const [selectedItem, setSelectedItem] = React.useState();
-    const [items, setItems] = React.useState([]);
-    const [defCurrency, setDefCurrency] = React.useState();
-
-    React.useEffect(async () => {
-        const retrievedItems = await API.getItems(token);
-        setDefCurrency(retrievedItems[0].currency);
-        setItems(retrievedItems);
-    }, [JSON.stringify(items)]);
+    const [showSpinner, setShowSpinner] = React.useState(false);
 
     const addNew = () => {
         setSelectedItem({
             name: '',
             image: '',
             price: '',
-            currency: defCurrency,
+            degree: '',
+            ibu: '',
+            description: '',
+            currency: currency,
         });
         setShowModal(true);
     };
@@ -37,107 +32,65 @@ const ItemsTable = () => {
         setShowModal(true);
     };
 
-    const delItem = (itemID) => {
-        const isDeleted = API.deleteItem(token, itemID);
-        if (isDeleted) {
-            setItems(items.filter((item) => item._id !== itemID));
-        }
+    const delItem = async (item) => {
+        setShowSpinner(true);
+        const deletedItem = await API.deleteItem(item);
+        await refreshData();
+        setShowSpinner(false);
     };
 
     const saveItem = async (item) => {
-        if ('_id' in selectedItem) {
-            delItem(selectedItem._id);
-        }
-        
-        // Hack for keeping the fields in the right order
-        const newItem = {
-            _id: item._id,
-            name: item.name,
-            image: item.image,
-            price: Number(item.price),
-            currency: 'token',
-        };
-        const newItemID = await API.putItems(token, newItem);
-        item._id = newItemID[0];
-        setItems([...items, item]);
         setShowModal(false);
+        setShowSpinner(true);
+
+        if ('_id' in selectedItem) {
+            item._id = selectedItem._id;
+            const updatedItem = await API.modifyItem(item);
+        } else {
+            item.edition = activeEdition.name;
+            const addedItem = await API.createItem(item);
+            // TODO Toast + Error Management 
+
+        }
+
+        await refreshData();
+        setShowSpinner(false);
     };
 
-    const buildHeading = () => {
-        const headers = items.length > 0 ? Object.keys(items[0]) : [];
-        return (
-            <thead>
-                <tr>
-                    {headers.map((h, i) => {
-                        return (
-                            <th key={i} className={css.headCell}>
-                                {h === '_id' ? 'id' : h}
-                            </th>
-                        );
-                    })}
-                    <th key='head-edit' className={css.headCell}>
-                        edit
-                    </th>
-                    <th key='head-delete' className={css.headCell}>
-                        delete
-                    </th>
-                </tr>
-            </thead>
-        );
-    };
-
-    const buildRowCells = (row, index) => {
-        return Object.values(row).map((r, i) => {
-            return (
-                <td key={'dt-' + i} className={css.cell}>
-                    {i === 0 ? index : r}
-                </td>
+    let tableJsx = <Spinner color='blue' />;
+    if (!showSpinner && items.length > 0) {
+        const tableData = items.map((item) => {
+            const editIcon = (
+                <PencilIcon className='w-icon h-icon cursor-pointer' onClick={() => modifyItem(item)} />
             );
-        });
-    };
 
-    const buildRows = () => {
-        return (
-            <tbody>
-                {items.map((row, index) => {
-                    return (
-                        <tr key={index}>
-                            {buildRowCells(row, index)}
-                            <td key={'edit-' + index} className={css.cell}>
-                                <button onClick={() => modifyItem(row)}>
-                                    edit
-                                </button>
-                            </td>
-                            <td key={'delete-' + index} className={css.cell}>
-                                <button onClick={() => delItem(row._id)}>
-                                    delete
-                                </button>
-                            </td>
-                        </tr>
-                    );
-                })}
-            </tbody>
-        );
-    };
+            const deleteIcon = (
+                <TrashIcon className='w-icon h-icon cursor-pointer text-red-500' onClick={() => delItem(item)} />
+            );
+
+            return {
+                _id: item._id,
+                name: item.name,
+                degree: `${item.degree} %`,
+                ibu: item.ibu,
+                price: `${item.price} ${item.currency}`,
+                edition: item.edition,
+                edit: editIcon,
+                delete: deleteIcon,
+            };
+        });
+
+        tableJsx = <DataTable headers={Object.keys(tableData[0])} rows={tableData} />;
+    }
 
     return (
-        <div className={css.wrapper}>
-            <div className={css.tableWrapper}>
-                <table>
-                    {buildHeading()}
-                    {buildRows()}
-                </table>
-            </div>
+        <>
+            {tableJsx}
             <div className={css.bottomTable}>
-                <Button severity='normal' text='+ Add' onClick={addNew} />
+                <Button accent='blue' label='+ Add' clickHandler={addNew} />
             </div>
-            <ItemModal
-                item={selectedItem}
-                show={showModal}
-                save={saveItem}
-                close={() => setShowModal(false)}
-            />
-        </div>
+            <ItemModal item={selectedItem} show={showModal} save={saveItem} close={() => setShowModal(false)} />
+        </>
     );
 };
 

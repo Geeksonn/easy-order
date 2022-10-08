@@ -1,27 +1,17 @@
 import React from 'react';
-import Context from '../components/context';
-import ItemsTable from '../components/items-table';
-import Layout from '../components/layout';
 
-import Login from '../components/login';
+import StateContext from '@context/stateContext';
+
+import Layout from '@components/layout';
+import Login from '@components/login';
+import ConfigPage from '@components/config-page';
 
 const Config = () => {
-    const { tokenCtx } = React.useContext(Context);
-    const { token } = tokenCtx;
+    const { stateCtx } = React.useContext(StateContext);
+    const authed = stateCtx.state.user ? true : false;
+    const child = authed ? <ConfigPage /> : <Login />;
 
-    if (!token) {
-        return (
-            <Layout>
-                <Login />
-            </Layout>
-        );
-    } else {
-        return (
-            <Layout>
-                <ItemsTable />
-            </Layout>
-        );
-    }
+    return <Layout authenticated={authed}>{child}</Layout>;
 };
 
 export default Config;

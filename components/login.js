@@ -1,51 +1,35 @@
 import React from 'react';
 
-import { authenticate } from '../lib/auth';
+import { authenticateUser } from '@lib/realmClient';
+import StateContext from '@context/stateContext';
 
-import styles from '../styles/login.module.css';
-import Context from './context';
-import { Button } from 'geekson-ui';
+import css from '@styles/login.module.css';
+import { Button, Spinner } from 'geekson-ui';
 
 const Login = () => {
-    const usernameInput = React.useRef();
-    const passwordInput = React.useRef();
-    const { tokenCtx } = React.useContext(Context);
-    const { setToken } = tokenCtx;
+    const [showSpinner, setShowSpinner] = React.useState(false);
+    const { stateCtx } = React.useContext(StateContext);
 
     const auth = async () => {
-        const authInfo = {
-            username: usernameInput.current.value,
-            password: passwordInput.current.value,
-        };
+        setShowSpinner(true);
 
-        const newToken = await authenticate(authInfo);
-        setToken(newToken);
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const user = await authenticateUser(email, password);
+        stateCtx.setState({ ...stateCtx.state, user: user });
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.login}>
-                <input
-                    ref={usernameInput}
-                    placeholder='Username'
-                    id='username'
-                    className={styles.field}
-                    type='text'
-                />
-                <input
-                    ref={passwordInput}
-                    placeholder='Password'
-                    id='password'
-                    className={styles.field}
-                    type='password'
-                />
-                <button
-                    className={styles.button}
-                    severity='normal'
-                    onClick={() => auth()}
-                >
-                    Login
-                </button>
+        <div className={css.container}>
+            <div className={css.login}>
+                <input placeholder='E-mail' id='email' type='text' />
+                <input placeholder='Password' id='password' type='password' className='mt-4' />
+
+                {!showSpinner && (
+                    <Button id='loginBtn' label='Login' accent='blue' clickHandler={auth} className='mt-6' />
+                )}
+                {showSpinner && <Spinner color='blue' className='w-7 h-7' />}
             </div>
         </div>
     );

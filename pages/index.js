@@ -1,16 +1,14 @@
 import React from 'react';
 
-import Login from '../components/login';
-import Order from '../components/order';
-import Context from '../components/context';
-import Link from 'next/link';
-import Layout from '../components/layout';
+import Login from '@components/login';
+import Order from '@components/order';
+import Layout from '@components/layout';
+import StateContext from '@context/stateContext';
 
 const Home = () => {
-    const { tokenCtx } = React.useContext(Context);
-    const { token } = tokenCtx;
-
-    if (!token) {
+    const { stateCtx } = React.useContext(StateContext);
+    
+    if (!stateCtx.state.user) {
         return (
             <Layout>
                 <Login />
@@ -18,7 +16,7 @@ const Home = () => {
         );
     } else {
         return (
-            <Layout>
+            <Layout authenticated>
                 <Order />
             </Layout>
         );

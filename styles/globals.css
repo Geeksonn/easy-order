@@ -18,3 +18,25 @@ a {
 * {
   box-sizing: border-box;
 }
+
+/*input[type=text],
+input[type=number],
+input[type=file],
+input[type=password],*/
+input,
+textarea {
+    @apply border border-gray-300 rounded-md px-3 py-2 w-full text-gray-900 font-light;
+    @apply focus:outline-none focus:ring-teal-500 focus:border-teal-500;
+}
+
+textarea {
+    @apply h-36 resize-y;
+}
+
+form {
+    @apply mt-4 p-6 flex flex-col;
+}
+
+label {
+    @apply font-medium mt-5 mb-1 first:mt-0;
+}

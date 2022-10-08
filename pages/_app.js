@@ -1,18 +1,19 @@
 import React from 'react';
-import Context from '../components/context';
 
-import '../styles/globals.css';
+import StateContext from '@context/stateContext';
+
+import '@styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
-    const [token, setToken] = React.useState(null);
+    const [state, setState] = React.useState({});
     const context = {
-        tokenCtx: { token, setToken },
+        stateCtx: { state, setState },
     };
 
     return (
-        <Context.Provider value={context}>
+        <StateContext.Provider value={context}>
             <Component {...pageProps} />
-        </Context.Provider>
+        </StateContext.Provider>
     );
 }
 

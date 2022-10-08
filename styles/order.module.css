@@ -1,7 +1,7 @@
 .itemsWrapper {
-    @apply flex flex-wrap justify-center /*space-x-6*/ items-center /*mt-7*/ /*px-14*/;
+    @apply flex flex-wrap justify-center items-center;
 }
 
 .summary {
-  @apply flex flex-wrap justify-center space-x-5 items-center mt-7 mx-auto;
+  @apply flex flex-wrap justify-center items-center mt-7 mx-auto;
 }

@@ -1,26 +1,30 @@
 import React from 'react';
 
-import css from '../styles/item-form.module.css';
+import css from '@styles/item-form.module.css';
+import { Button } from 'geekson-ui';
 
 const ItemForm = ({ save, cancel, item }) => {
-    const nameInput = React.useRef();
-    const priceInput = React.useRef();
-    const imageInput = React.useRef();
-    const currencyInput = React.useRef();
-
     React.useEffect(() => {
-        nameInput.current.value = item?.name;
-        priceInput.current.value = item?.price;
-        currencyInput.current.innerHTML = item?.currency;
-        imageInput.current.value = item?.image;
+        document.getElementById('name').value = item?.name;
+        document.getElementById('price').value = item?.price;
+        document.getElementById('currency').innerHTML = item?.currency;
+        //document.getElementById('image').value = item?.image;
+        if (item?.image) document.getElementById('image').hidden = true;
+        if (item?.image) document.getElementById('imageLabel').hidden = true;
+        document.getElementById('degree').value = item?.degree;
+        document.getElementById('ibu').value = item?.ibu;
+        document.getElementById('description').value = item?.description;
     });
 
     const saveItem = () => {
         const newItem = {
-            name: nameInput.current.value,
-            price: priceInput.current.value,
-            currency: currencyInput.current.innerHTML,
-            image: imageInput.current.value,
+            name: document.getElementById('name').value,
+            price: document.getElementById('price').value,
+            currency: document.getElementById('currency').innerHTML,
+            image: document.getElementById('image').files[0],
+            degree: document.getElementById('degree').value,
+            ibu: document.getElementById('ibu').value,
+            description: document.getElementById('description').value,
         };
 
         save(newItem);
@@ -28,21 +32,29 @@ const ItemForm = ({ save, cancel, item }) => {
     return (
         <div className={css.form}>
             <label htmlFor='name'>Name</label>
-            <input ref={nameInput} className={css.normalInput} type='text' id='name' name='name' />
+            <input type='text' id='name' name='name' />
+
             <label htmlFor='price'>Price</label>
             <div className={css.priceWrapper}>
-                <input ref={priceInput} className={css.priceInput} type='text' id='price' name='price' />
-                <div ref={currencyInput} className={css.currency}></div>
+                <input className={css.priceInput} type='number' id='price' name='price' />
+                <div id='currency' className={css.currency}></div>
             </div>
-            <label htmlFor='image'>Image</label>
-            <input ref={imageInput} className={css.normalInput} type='text' id='image' name='image' />
+
+            <label htmlFor='image' id='imageLabel'>Image</label>
+            <input type='file' accept='image/*' id='image' name='image' />
+
+            <label htmlFor='degree'>% Alcohol</label>
+            <input type='number' id='degree' name='degree' />
+
+            <label htmlFor='ibu'>IBU</label>
+            <input type='number' id='ibu' name='ibu' />
+
+            <label htmlFor='description'>Description</label>
+            <textarea id='description' name='description'></textarea>
+
             <div className={css.actions}>
-                <button className={css.button} onClick={saveItem}>
-                    Save
-                </button>
-                <button className={css.forgot} onClick={cancel}>
-                    Cancel
-                </button>
+                <Button label='Save' accent='green' clickHandler={saveItem} />
+                <Button label='Cancel' accent='red' clickHandler={cancel} />
             </div>
         </div>
     );

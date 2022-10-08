@@ -1,0 +1,7 @@
+.wrapper {
+    @apply w-screen p-10;
+}
+
+.bottomTable {
+    @apply mt-5 ml-3;
+}

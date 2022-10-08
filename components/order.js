@@ -1,27 +1,50 @@
 import React from 'react';
-import Button from '../components/button';
-import ItemCard from '../components/item-card';
-import OrderSummary from '../components/order-summary';
-import { getItems } from '../lib/items';
-import { addOrder } from '../lib/orders';
-import styles from '../styles/order.module.css';
-import Context from './context';
+
+import { listItems } from '@lib/items/items';
+import { createOrder } from '@lib/orders/orders';
+import { listEditions } from '@lib/editions/editions';
+
+import ItemCard from '@components/item-card';
+import OrderSummary from '@components/order-summary';
+import { Button } from 'geekson-ui';
+
+import css from '@styles/order.module.css';
 
 const Order = () => {
-    const [totalPrice, setTotalPrice] = React.useState(0);
     const [cart, setCart] = React.useState([]);
     const [items, setItems] = React.useState([]);
-    const { tokenCtx } = React.useContext(Context);
-    const { token } = tokenCtx;
+    const [activeEdition, setActiveEdition] = React.useState();
 
-    React.useEffect(async () => {
-        setItems(await getItems(token));
+    React.useEffect(() => {
+        getItems();
     }, [JSON.stringify(items)]);
 
-    const itemClicked = (index, item) => {
-        console.log('item: ', item);
-        //setTotalPrice(totalPrice + Number(item.price));
-        setTotalPrice(totalPrice + item.price);
+    const getEditions = async() => {
+        const editions = await listEditions();
+        if (editions.error) {
+            // TODO Toast
+            console.error(editions.error);
+        } else {
+            return editions;
+        }
+    }
+
+    const getItems = async() => {
+        const editions = await getEditions();
+        const activeEdition = editions.find((ed) => ed.active === true);
+        setActiveEdition(activeEdition);
+
+        const items = await listItems({ edition: activeEdition.name });
+        if (items.error) {
+            // TODO Toast or somethign
+            console.error(items.error);
+        }
+        else {
+            setItems(items);
+        }
+    }
+
+    const itemClicked = (item) => {
         setCart([...cart, item]);
     };
 
@@ -38,7 +61,6 @@ const Order = () => {
     };
 
     const resetCart = () => {
-        setTotalPrice(0);
         setCart([]);
     };
 
@@ -47,12 +69,14 @@ const Order = () => {
             console.log('Nothing to order');
         } else {
             const order = {
-                totalPrice: totalPrice,
+                totalPrice: cart.map((it) => it.price).reduce((prev, curr) => prev + curr, 0),
                 currency: cart[0].currency,
                 items: cart,
+                date: new Date(),
+                edition: activeEdition.name
             };
 
-            addOrder(token, order);
+            createOrder(order);
         }
 
         resetCart();
@@ -60,7 +84,7 @@ const Order = () => {
 
     return (
         <div>
-            <div className={styles.itemsWrapper}>
+            <div className={css.itemsWrapper}>
                 {items.map((item, index) => {
                     return (
                         <ItemCard
@@ -73,10 +97,13 @@ const Order = () => {
                     );
                 })}
             </div>
-            <div className={styles.summary}>
-                <Button severity='error' text='Annuler' onClick={resetCart} />
-                <OrderSummary cart={cart} totalPrice={totalPrice} />
-                <Button severity='success' text='Commander' onClick={order} />
+            <div className={css.summary}>
+                <Button label='Annuler' accent='red' className='mr-4' clickHandler={resetCart} />
+                <OrderSummary
+                    cart={cart}
+                    totalPrice={cart.map((it) => it.price).reduce((prev, curr) => prev + curr, 0)}
+                />
+                <Button label='Commander' accent='green' className='ml-4' clickHandler={order} />
             </div>
         </div>
     );

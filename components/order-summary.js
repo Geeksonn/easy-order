@@ -1,4 +1,4 @@
-import styles from '../styles/order-summary.module.css';
+import styles from '@styles/order-summary.module.css';
 
 export default function OrderSummary({ cart, totalPrice }) {
     const currency = cart.length > 0 ? cart[0].currency : ' ';
