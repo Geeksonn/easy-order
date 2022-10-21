@@ -1,6 +1,6 @@
 import React from 'react';
 
-import css from '@styles/item-form.module.css';
+import css from '@styles/forms.module.css';
 import { Button } from 'geekson-ui';
 
 const ItemForm = ({ save, cancel, item }) => {

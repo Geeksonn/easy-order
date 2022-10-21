@@ -2,17 +2,33 @@ import React from 'react';
 
 import * as lib from '@lib/editions/editions';
 
+import Modal from '@components/modal';
 import { CheckIcon, CheckCircleIcon, XCircleIcon, TrashIcon } from '@heroicons/react/outline';
-import DataTable from './dataTable';
+import DataTable from '../dataTable';
 import { Button, Spinner } from 'geekson-ui';
 
 import css from '@styles/config-page.module.css';
+import EditionForm from './editionForm';
 
 const EditionsTable = ({ editions, refreshData }) => {
     const [showSpinner, setShowSpinner] = React.useState(false);
+    const [showModal, setShowModal] = React.useState(false);
 
     const addNew = () => {
-        console.log('TODO Add New');
+        setShowModal(true);
+    };
+
+    const saveEdition = async (edition) => {
+        setShowModal(false);
+        setShowSpinner(true);
+
+        const addedEdition = await lib.createEdition(edition);
+        if (addedEdition.error) {
+            console.error('Error while adding a new edition: ', addedEdition.error);
+        } else {
+            await refreshData();
+        }
+        setShowSpinner(false);
     };
 
     const activateEdition = async (edition) => {
@@ -24,12 +40,12 @@ const EditionsTable = ({ editions, refreshData }) => {
         }
     };
 
-    const deleteEdition = async(edition) => {
+    const deleteEdition = async (edition) => {
         setShowSpinner(true);
         await lib.deleteEdition(edition);
         refreshData();
         setShowSpinner(false);
-    }
+    };
 
     let tableJsx = <Spinner color='blue' />;
     if (!showSpinner && editions.length > 0) {
@@ -74,6 +90,9 @@ const EditionsTable = ({ editions, refreshData }) => {
             <div className={css.bottomTable}>
                 <Button label='+ Add' accent='blue' clickHandler={addNew} />
             </div>
+            <Modal title='Ajouter une édition' show={showModal} close={() => setShowModal(false)}>
+                <EditionForm save={saveEdition} cancel={() => setShowModal(false)} />
+            </Modal>
         </>
     );
 };

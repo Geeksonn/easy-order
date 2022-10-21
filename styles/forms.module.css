@@ -17,3 +17,8 @@
 .actions {
     @apply mt-6 flex justify-between items-center;
 }
+
+.routeBeerList {
+    @apply w-full flex flex-col justify-start mt-4 mb-2;
+    @apply border border-neutral-300 rounded-lg p-5;
+}

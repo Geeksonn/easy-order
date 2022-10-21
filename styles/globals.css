@@ -33,10 +33,14 @@ textarea {
     @apply h-36 resize-y;
 }
 
-form {
+label {
+    @apply font-medium mt-5 mb-1 first:mt-0;
+}
+
+.form {
     @apply mt-4 p-6 flex flex-col;
 }
 
-label {
-    @apply font-medium mt-5 mb-1 first:mt-0;
+.formActions {
+    @apply mt-6 flex justify-between items-center;
 }

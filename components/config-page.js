@@ -2,18 +2,29 @@ import React from 'react';
 
 import * as itemsAPI from '@lib/items/items';
 import * as editionsAPI from '@lib/editions/editions';
+import * as routesAPI from '@lib/routes/routes';
+import * as questionsAPI from '@lib/questions/questions';
 
 import { GroupButton, Spinner } from 'geekson-ui';
 import ItemsTable from './items-table';
-import EditionsTable from './editionsTable';
+import EditionsTable from './editions/editionsTable';
 
 import css from '@styles/config-page.module.css';
+import RoutesTable from './routes/routesTable';
+import QuestionsTable from './questions/questionsTable';
+
+const BEER_TAB = 'Bières';
+const EDITION_TAB = 'Editions';
+const ROUTE_TAB = 'Routes';
+const CHOICE_TAB = 'Arbre';
 
 const ConfigPage = () => {
     const [selectedTab, setSelectedTab] = React.useState('Bières');
     const [spinner, setSpinner] = React.useState();
     const [items, setItems] = React.useState([]);
     const [editions, setEditions] = React.useState([]);
+    const [routes, setRoutes] = React.useState([]);
+    const [questions, setQuestions] = React.useState([]);
     const [defCurrency, setDefCurrency] = React.useState();
 
     React.useEffect(() => {
@@ -24,6 +35,8 @@ const ConfigPage = () => {
     const getData = async () => {
         await getEditions();
         await getItems();
+        await getRoutes();
+        await getQuestions();
         setSpinner(false);
     };
 
@@ -37,11 +50,20 @@ const ConfigPage = () => {
         setEditions(await editionsAPI.listEditions());
     };
 
+    const getRoutes = async () => {
+        setRoutes(await routesAPI.listRoutes());
+    };
+
+    const getQuestions = async () => {
+        setQuestions(await questionsAPI.listQuestions());
+    };
+
     let childJsx = <Spinner color='blue' />;
     if (!spinner) {
-        if (selectedTab === 'Bières') {
-            const activeEdition = editions.find((edition) => edition.active === true);
-            const activeEditionItems = items.filter((item) => item.edition === activeEdition.name);
+        const activeEdition = editions.find((edition) => edition.active === true);
+        const activeEditionItems = items.filter((item) => item.edition === activeEdition.name);
+
+        if (selectedTab === BEER_TAB) {
             childJsx = (
                 <ItemsTable
                     items={activeEditionItems}
@@ -50,8 +72,28 @@ const ConfigPage = () => {
                     refreshData={getItems}
                 />
             );
-        } else {
+        } else if (selectedTab === EDITION_TAB) {
             childJsx = <EditionsTable editions={editions} refreshData={getEditions} />;
+        } else if (selectedTab === ROUTE_TAB) {
+            const activeEditionRoutes = routes.filter((route) => route.edition === activeEdition.name);
+            childJsx = (
+                <RoutesTable
+                    routes={activeEditionRoutes}
+                    items={activeEditionItems}
+                    activeEdition={activeEdition}
+                    refreshData={getRoutes}
+                />
+            );
+        } else {
+            const activeEditionQuestions = questions.filter((question) => question.edition === activeEdition.name);
+            childJsx = (
+                <QuestionsTable
+                    questions={activeEditionQuestions}
+                    items={activeEditionItems}
+                    activeEdition={activeEdition}
+                    refreshData={getQuestions}
+                />
+            );
         }
     }
 
@@ -59,7 +101,7 @@ const ConfigPage = () => {
         <div className={css.wrapper}>
             <GroupButton
                 className='mb-12'
-                labels={['Bières', 'Editions']}
+                labels={[BEER_TAB, EDITION_TAB, ROUTE_TAB, CHOICE_TAB]}
                 clickHandler={(label) => setSelectedTab(label)}
             />
             {!spinner && childJsx}
