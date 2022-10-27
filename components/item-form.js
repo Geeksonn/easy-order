@@ -6,6 +6,8 @@ import { Button } from 'geekson-ui';
 const ItemForm = ({ save, cancel, item }) => {
     React.useEffect(() => {
         document.getElementById('name').value = item?.name;
+        document.getElementById('type').value = item?.type;
+        document.getElementById('brewery').value = item?.brewery;
         document.getElementById('price').value = item?.price;
         document.getElementById('currency').innerHTML = item?.currency;
         //document.getElementById('image').value = item?.image;
@@ -19,6 +21,8 @@ const ItemForm = ({ save, cancel, item }) => {
     const saveItem = () => {
         const newItem = {
             name: document.getElementById('name').value,
+            type: document.getElementById('type').value,
+            brewery: document.getElementById('brewery').value,
             price: document.getElementById('price').value,
             currency: document.getElementById('currency').innerHTML,
             image: document.getElementById('image').files[0],
@@ -34,13 +38,21 @@ const ItemForm = ({ save, cancel, item }) => {
             <label htmlFor='name'>Name</label>
             <input type='text' id='name' name='name' />
 
-            <label htmlFor='price'>Price</label>
+            <label htmlFor='type'>Type</label>
+            <input type='text' id='type' name='type' />
+
+            <label htmlFor='brewery'>Brasserie</label>
+            <input type='text' id='brewery' name='brewery' />
+
+            <label htmlFor='price'>Prix</label>
             <div className={css.priceWrapper}>
                 <input className={css.priceInput} type='number' id='price' name='price' />
                 <div id='currency' className={css.currency}></div>
             </div>
 
-            <label htmlFor='image' id='imageLabel'>Image</label>
+            <label htmlFor='image' id='imageLabel'>
+                Image
+            </label>
             <input type='file' accept='image/*' id='image' name='image' />
 
             <label htmlFor='degree'>% Alcohol</label>

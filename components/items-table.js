@@ -17,6 +17,8 @@ const ItemsTable = ({ items, currency, activeEdition, refreshData }) => {
     const addNew = () => {
         setSelectedItem({
             name: '',
+            type: '',
+            brewery: '',
             image: '',
             price: '',
             degree: '',
@@ -71,6 +73,8 @@ const ItemsTable = ({ items, currency, activeEdition, refreshData }) => {
             return {
                 _id: item._id,
                 name: item.name,
+                type: item.type,
+                brasserie: item.brewery,
                 degree: `${item.degree} %`,
                 ibu: item.ibu,
                 price: `${item.price} ${item.currency}`,
