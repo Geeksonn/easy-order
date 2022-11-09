@@ -10,9 +10,12 @@ const ItemForm = ({ save, cancel, item }) => {
         document.getElementById('brewery').value = item?.brewery;
         document.getElementById('price').value = item?.price;
         document.getElementById('currency').innerHTML = item?.currency;
-        //document.getElementById('image').value = item?.image;
-        if (item?.image) document.getElementById('image').hidden = true;
-        if (item?.image) document.getElementById('imageLabel').hidden = true;
+        if (item?.image) {
+            document.getElementById('image').hidden = true;
+            document.getElementById('imageCard').hidden = true;
+            document.getElementById('imageLabel').hidden = true;
+            document.getElementById('imageCardLabel').hidden = true;
+        }
         document.getElementById('degree').value = item?.degree;
         document.getElementById('ibu').value = item?.ibu;
         document.getElementById('description').value = item?.description;
@@ -26,6 +29,7 @@ const ItemForm = ({ save, cancel, item }) => {
             price: document.getElementById('price').value,
             currency: document.getElementById('currency').innerHTML,
             image: document.getElementById('image').files[0],
+            imageCard: document.getElementById('imageCard').files[0],
             degree: document.getElementById('degree').value,
             ibu: document.getElementById('ibu').value,
             description: document.getElementById('description').value,
@@ -54,6 +58,11 @@ const ItemForm = ({ save, cancel, item }) => {
                 Image
             </label>
             <input type='file' accept='image/*' id='image' name='image' />
+
+            <label htmlFor='imageCard' id='imageCardLabel'>
+                Image pour la carte
+            </label>
+            <input type='file' accept='image/*' id='imageCard' name='imageCard' />
 
             <label htmlFor='degree'>% Alcohol</label>
             <input type='number' id='degree' name='degree' />
