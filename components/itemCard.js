@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-import css from '@styles/item-card.module.css';
+import css from '@styles/itemCard.module.css';
 
 export default function ItemCard({ index, item, quantity, cardClick }) {
     const IMG_SIZE = 130;

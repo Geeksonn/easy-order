@@ -1,0 +1,15 @@
+.wrapper {
+    @apply w-screen p-10;
+}
+
+.bottomTable {
+    @apply mt-5 ml-3;
+}
+
+.multipleLineDivClass {
+    @apply flex flex-col;
+}
+.multipleLineTextClass {
+    @apply border-b border-neutral-200 pb-2 pt-2;
+    @apply first:pt-0 last:pb-0 last:border-b-0;
+}

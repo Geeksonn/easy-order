@@ -6,10 +6,10 @@ import * as routesAPI from '@lib/routes/routes';
 import * as questionsAPI from '@lib/questions/questions';
 
 import { GroupButton, Spinner } from 'geekson-ui';
-import ItemsTable from './items-table';
+import ItemsTable from './items/itemsTable';
 import EditionsTable from './editions/editionsTable';
 
-import css from '@styles/config-page.module.css';
+import css from '@styles/configPage.module.css';
 import RoutesTable from './routes/routesTable';
 import QuestionsTable from './questions/questionsTable';
 

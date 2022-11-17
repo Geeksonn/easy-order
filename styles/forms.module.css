@@ -1,7 +1,3 @@
-.form {
-    @apply mt-4 p-6 flex flex-col;
-}
-
 .priceWrapper {
     @apply flex items-center;
 }

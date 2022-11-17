@@ -2,6 +2,7 @@ import React from 'react';
 
 import Modal from '@components/modal';
 import { Button } from 'geekson-ui';
+import { FormElement } from '@components/formElement';
 
 const EditionForm = ({ save, cancel }) => {
     const saveEdition = () => {
@@ -17,14 +18,9 @@ const EditionForm = ({ save, cancel }) => {
 
     return (
         <div className='form'>
-            <label htmlFor='name'>Nom</label>
-            <input type='text' id='name' name='name' />
-
-            <label htmlFor='month'>Date</label>
-            <div className='flex justify-evenly'>
-                <input type='text' id='month' name='month' placeholder='Mois' />
-                <input type='text' id='year' name='year' placeholder='Année' />
-            </div>
+            <FormElement element={{ id: 'name', type: 'text', label: 'Nom'}} />
+            <FormElement element={{ id: 'month', type: 'text', label: 'Mois'}} />
+            <FormElement element={{ id: 'year', type: 'text', label: 'Année'}} />
 
             <div className='formActions'>
                 <Button label='Save' accent='green' clickHandler={saveEdition} />

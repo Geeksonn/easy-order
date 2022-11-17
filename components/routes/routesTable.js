@@ -8,7 +8,7 @@ import { TrashIcon, PencilIcon } from '@heroicons/react/outline';
 import { Spinner, Button } from 'geekson-ui';
 import RouteForm from './routeForm';
 
-import css from '@styles/config-page.module.css';
+import css from '@styles/configPage.module.css';
 
 const RoutesTable = ({ routes, items, activeEdition, refreshData }) => {
     const [showSpinner, setShowSpinner] = React.useState(false);
