@@ -25,7 +25,7 @@ input[type=file],
 input[type=password],*/
 input,
 textarea {
-    @apply border border-gray-300 rounded-md px-3 py-2 w-full text-gray-900 font-light;
+    @apply border border-gray-300 rounded-md px-3 py-1 w-full text-gray-900 font-light;
     @apply focus:outline-none focus:ring-teal-500 focus:border-teal-500;
 }
 
@@ -34,7 +34,7 @@ textarea {
 }
 
 label {
-    @apply font-medium mt-5 mb-1 first:mt-0;
+    @apply font-medium ;
 }
 
 .form {
@@ -43,4 +43,8 @@ label {
 
 .formActions {
     @apply mt-6 flex justify-between items-center;
+}
+
+.formElementWrapper {
+    @apply flex items-center mt-5 mb-1 first:mt-0;
 }

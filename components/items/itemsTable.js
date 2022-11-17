@@ -4,10 +4,11 @@ import * as API from '@lib/items/items';
 
 import { TrashIcon, PencilIcon } from '@heroicons/react/outline';
 import { Button, Spinner } from 'geekson-ui';
-import ItemModal from './item-modal';
+import Modal from '@components/modal';
 
-import css from '@styles/config-page.module.css';
-import DataTable from './dataTable';
+import css from '@styles/configPage.module.css';
+import DataTable from '../dataTable';
+import ItemForm from './itemForm';
 
 const ItemsTable = ({ items, currency, activeEdition, refreshData }) => {
     const [showModal, setShowModal] = React.useState(false);
@@ -93,7 +94,13 @@ const ItemsTable = ({ items, currency, activeEdition, refreshData }) => {
             <div className={css.bottomTable}>
                 <Button accent='blue' label='+ Add' clickHandler={addNew} />
             </div>
-            <ItemModal item={selectedItem} show={showModal} save={saveItem} close={() => setShowModal(false)} />
+
+            <Modal
+                title={false ? `Modifier une question` : `Ajouter une question`}
+                show={showModal}
+                close={() => setShowModal(false)}>
+                <ItemForm item={selectedItem} save={saveItem} cancel={() => setShowModal(false)} />
+            </Modal>
         </>
     );
 };

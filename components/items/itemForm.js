@@ -1,7 +1,7 @@
 import React from 'react';
 
-import css from '@styles/forms.module.css';
 import { Button } from 'geekson-ui';
+import { FormElement } from '../formElement';
 
 const ItemForm = ({ save, cancel, item }) => {
     React.useEffect(() => {
@@ -9,10 +9,13 @@ const ItemForm = ({ save, cancel, item }) => {
         document.getElementById('type').value = item?.type;
         document.getElementById('brewery').value = item?.brewery;
         document.getElementById('price').value = item?.price;
-        document.getElementById('currency').innerHTML = item?.currency;
-        //document.getElementById('image').value = item?.image;
-        if (item?.image) document.getElementById('image').hidden = true;
-        if (item?.image) document.getElementById('imageLabel').hidden = true;
+        //document.getElementById('currency').innerHTML = item?.currency;
+        if (item?.image) {
+            document.getElementById('image').hidden = true;
+            document.getElementById('imageCard').hidden = true;
+            //document.getElementById('imageLabel').hidden = true;
+            //document.getElementById('imageCardLabel').hidden = true;
+        }
         document.getElementById('degree').value = item?.degree;
         document.getElementById('ibu').value = item?.ibu;
         document.getElementById('description').value = item?.description;
@@ -24,8 +27,9 @@ const ItemForm = ({ save, cancel, item }) => {
             type: document.getElementById('type').value,
             brewery: document.getElementById('brewery').value,
             price: document.getElementById('price').value,
-            currency: document.getElementById('currency').innerHTML,
+            //currency: document.getElementById('currency').innerHTML,
             image: document.getElementById('image').files[0],
+            imageCard: document.getElementById('imageCard').files[0],
             degree: document.getElementById('degree').value,
             ibu: document.getElementById('ibu').value,
             description: document.getElementById('description').value,
@@ -34,37 +38,22 @@ const ItemForm = ({ save, cancel, item }) => {
         save(newItem);
     };
     return (
-        <div className={css.form}>
-            <label htmlFor='name'>Name</label>
-            <input type='text' id='name' name='name' />
+        <div className='form'>
+            <FormElement element={{ id: 'name', type: 'text', label: 'Nom' }} />
+            <FormElement element={{ id: 'type', type: 'text', label: 'Type' }} />
+            <FormElement element={{ id: 'brewery', type: 'text', label: 'Brasserie' }} />
+            <FormElement element={{ id: 'price', type: 'number', label: `Prix (${item.currency})` }} />
+            <FormElement element={{ id: 'image', type: 'file', label: 'Etiquette' }} />
+            <FormElement element={{ id: 'imageCard', type: 'file', label: 'Bouteille' }} />
+            <FormElement element={{ id: 'degree', type: 'number', label: '% Alcool' }} />
+            <FormElement element={{ id: 'ibu', type: 'number', label: 'IBU' }} />
 
-            <label htmlFor='type'>Type</label>
-            <input type='text' id='type' name='type' />
-
-            <label htmlFor='brewery'>Brasserie</label>
-            <input type='text' id='brewery' name='brewery' />
-
-            <label htmlFor='price'>Prix</label>
-            <div className={css.priceWrapper}>
-                <input className={css.priceInput} type='number' id='price' name='price' />
-                <div id='currency' className={css.currency}></div>
-            </div>
-
-            <label htmlFor='image' id='imageLabel'>
-                Image
+            <label htmlFor='description' className='mt-5'>
+                Description
             </label>
-            <input type='file' accept='image/*' id='image' name='image' />
-
-            <label htmlFor='degree'>% Alcohol</label>
-            <input type='number' id='degree' name='degree' />
-
-            <label htmlFor='ibu'>IBU</label>
-            <input type='number' id='ibu' name='ibu' />
-
-            <label htmlFor='description'>Description</label>
             <textarea id='description' name='description'></textarea>
 
-            <div className={css.actions}>
+            <div className={'formActions'}>
                 <Button label='Save' accent='green' clickHandler={saveItem} />
                 <Button label='Cancel' accent='red' clickHandler={cancel} />
             </div>

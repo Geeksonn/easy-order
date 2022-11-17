@@ -4,7 +4,7 @@ import StateContext from '@context/stateContext';
 
 import Layout from '@components/layout';
 import Login from '@components/login';
-import ConfigPage from '@components/config-page';
+import ConfigPage from '@components/configPage';
 
 const Config = () => {
     const { stateCtx } = React.useContext(StateContext);

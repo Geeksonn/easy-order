@@ -7,7 +7,7 @@ import { CheckIcon, CheckCircleIcon, XCircleIcon, TrashIcon } from '@heroicons/r
 import DataTable from '../dataTable';
 import { Button, Spinner } from 'geekson-ui';
 
-import css from '@styles/config-page.module.css';
+import css from '@styles/configPage.module.css';
 import EditionForm from './editionForm';
 
 const EditionsTable = ({ editions, refreshData }) => {

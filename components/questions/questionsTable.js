@@ -6,9 +6,9 @@ import { TrashIcon } from '@heroicons/react/outline';
 import { Spinner, Button } from 'geekson-ui';
 import DataTable from '@components/dataTable';
 import Modal from '@components/modal';
-
-import css from '@styles/config-page.module.css';
 import QuestionForm from './questionForm';
+
+import css from '@styles/configPage.module.css';
 
 const QuestionsTable = ({ questions, items, activeEdition, refreshData }) => {
     const [showSpinner, setShowSpinner] = React.useState(false);
@@ -48,30 +48,27 @@ const QuestionsTable = ({ questions, items, activeEdition, refreshData }) => {
 
     let tableJsx = <Spinner color='blue' />;
     if (!showSpinner && questions.length > 0) {
-        const multipleLineDivClass = 'flex flex-col';
-        const multipleLineTextClass = 'border-b border-neutral-200 pb-2';
-        const multipleLineTextClassBelow = 'pt-2';
+        
 
         const questionsList = questions.map((question) => {
-            const options = (
-                <div className={multipleLineDivClass}>
-                    <p className={multipleLineTextClass}>{question.option1}</p>
-                    <p className={multipleLineTextClassBelow}>{question.option2}</p>
-                </div>
-            );
+            let optionArray = [];
+            let resultArray = [];
 
-            const rOpt1 = question.resultOption1;
-            const rOpt2 = question.resultOption2;
-            const result1 =
-                rOpt1.nextQuestion === -1 ? `Bière: ${rOpt1.selectedBeer}` : `-> Question n°${rOpt1.nextQuestion}`;
-            const result2 =
-                rOpt2.nextQuestion === -1 ? `Bière: ${rOpt2.selectedBeer}` : `-> Question n°${rOpt2.nextQuestion}`;
-            const results = (
-                <div className={multipleLineDivClass}>
-                    <p className={multipleLineTextClass}>{result1}</p>
-                    <p className={multipleLineTextClassBelow}>{result2}</p>
-                </div>
-            );
+            question.options.forEach((opt, ind) => {
+                optionArray.push(
+                    <p key={`opt_${ind}`} className={css.multipleLineTextClass}>
+                        {opt.option}
+                    </p>
+                );
+                resultArray.push(
+                    <p key={`res_${ind}`} className={css.multipleLineTextClass}>
+                        {opt.nextQuestion > 0 ? `-> Question n°${opt.nextQuestion}` : `Bière: ${opt.selectedBeer}`}
+                    </p>
+                );
+            });
+
+            const options = <div className={css.multipleLineDivClass}>{optionArray}</div>;
+            const results = <div className={css.multipleLineDivClass}>{resultArray}</div>;
 
             const deleteIcon = (
                 <TrashIcon
@@ -100,7 +97,7 @@ const QuestionsTable = ({ questions, items, activeEdition, refreshData }) => {
                 <Button label='+ Add' accent='blue' clickHandler={addNew} />
             </div>
             <Modal
-                title={false ? `Modifier une route` : `Ajouter une route`}
+                title={false ? `Modifier une question` : `Ajouter une question`}
                 show={showModal}
                 close={() => setShowModal(false)}>
                 <QuestionForm items={items} save={saveQuestion} cancel={() => setShowModal(false)} />

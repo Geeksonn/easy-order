@@ -4,7 +4,7 @@ import { listItems } from '@lib/items/items';
 import { createOrder } from '@lib/orders/orders';
 import { listEditions } from '@lib/editions/editions';
 
-import ItemCard from '@components/item-card';
+import ItemCard from '@components/itemCard';
 import OrderSummary from '@components/order-summary';
 import { Button } from 'geekson-ui';
 

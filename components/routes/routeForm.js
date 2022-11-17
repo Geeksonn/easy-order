@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from 'geekson-ui';
 
 import css from '@styles/forms.module.css';
+import { FormElement } from '@components/formElement';
 
 const RouteForm = ({ save, cancel, route, items }) => {
     const [beerFields, setBeerFields] = React.useState([]);
@@ -14,22 +15,14 @@ const RouteForm = ({ save, cancel, route, items }) => {
     });
 
     const addFormLine = () => {
-        const fieldId = `beer_${beerFields.length}`;
+        const element = {
+            id: `beer_${beerFields.length}`,
+            type: 'select',
+            label: 'Bière',
+            options: items,
+        };
 
-        const fieldJsx = (
-            <>
-                <label key={`label_${fieldId}`} htmlFor={fieldId}>Bière</label>
-                <select key={fieldId} id={fieldId} name={fieldId}>
-                    {items.map((item) => (
-                        <option key={`${fieldId}_${item._id}`} value={item.name}>
-                            {item.name}
-                        </option>
-                    ))}
-                </select>
-            </>
-        );
-
-        setBeerFields([...beerFields, fieldJsx]);
+        setBeerFields([...beerFields, <FormElement element={element} />]);
     };
 
     const saveItem = () => {
@@ -50,8 +43,7 @@ const RouteForm = ({ save, cancel, route, items }) => {
 
     return (
         <div className='form'>
-            <label htmlFor='name'>Name</label>
-            <input type='text' id='name' name='name' />
+            <FormElement element={{ id: 'name', type: 'text', label: 'Nom' }} />
 
             {beerFields.length > 0 ? (
                 <div id='beersList' className={css.routeBeerList}>
