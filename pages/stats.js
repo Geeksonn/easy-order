@@ -1,78 +1,54 @@
 // ./components/LineChart.js
 
-import React, {useEffect} from 'react';
-import Chart from "chart.js/auto";
-import {Line, Bar} from "react-chartjs-2";
+import React from 'react';
+import Graph from "@components/stats/graph";
+import Ranking from "@components/stats/ranking";
+import FunStats from "@components/stats/funStats";
 import {listOrders} from "@lib/orders/orders";
 
 
 const Stats = () => {
-
-    const plugin = {
-        id: 'custom_canvas_background_color',
-        beforeDraw: (chart) => {
-            const {ctx} = chart;
-            ctx.save();
-            ctx.globalCompositeOperation = 'destination-over';
-            ctx.fillStyle = 'lightGreen';
-            ctx.fillRect(0, 0, chart.width, chart.height);
-            ctx.restore();
-        }
-    };
-
-    const commandes = new Map();
-    const [data, setData] = React.useState({});
-
+    let totalDrinks = 0;
+    const [orders, setOrders] = React.useState([]);
+    const [totalLiters, setLiters] = React.useState(0);
+    const [totalEmptyWeight, setEmptyWeight] = React.useState(0);
+    //
     React.useEffect(() => {
-        initializeGraph()
-    }, [JSON.stringify(data)]);
+        initializeData()
+    }, [JSON.stringify(orders)]);
 
+    const initializeData = async () => {
+        await setOrders(await listOrders({edition: "2022-05"}));
+        orders.forEach(x => totalDrinks = (totalDrinks +   x.items.length));
 
-    const initializeGraph = async () => {
-        const orders = await listOrders();
+        console.log("total drinks", totalDrinks);
+        setLiters(Math.round(totalDrinks / 3));
+        setEmptyWeight(Math.round(totalDrinks / 4));
 
-        orders.map(order => order.items.forEach(item => addToMap(item.name)));
-        const labels = Array.from(commandes.keys());
-        console.log("orders:", orders.length);
-
-        //On trie celon le nombre de commandes
-        const orderdedCommandes = new Map([...commandes.entries()].sort((a, b) => b[1] - a[1]));
-        console.log("commandes:", Array.from(orderdedCommandes.values()));
-        setData({
-            labels: labels,
-            datasets: [
-                {
-                    label: "Consommations",
-                    backgroundColor:
-                    // ['rgb(0, 67, 53)',
-                    // 'rgb(238, 164, 200)',
-                        'rgb(246, 160, 0)',
-                    // ["rgb(230,94,68)"],
-                    borderWidth: 3,
-                    borderColor: "rgb(0,67,53)",
-                    data: Array.from(orderdedCommandes.values()),
-                },
-            ],
-        });
+        console.log("total liters", totalLiters);
+        console.log("total emptyWeight", totalEmptyWeight);
     }
-
-    const addToMap = (name) => {
-        commandes.set(name, (commandes.has(name) ? commandes.get(name) : 0) + 1);
-    }
-
-
-    // setTimeout(() => window.open("/stats-evolve", "_self"), 5000);
 
     return (
-        <div>
-            Page stats
-            {Object.keys(data).length > 0 ?
-                <Bar data={data} plugins={plugin}/>
-                : null}
-
+        <div className='flex'>
+            <div className='w-1/3 mr-5'>
+            <Ranking orders={orders}/>
+            </div>
+            <div className='w-2/3 flex flex-col'>
+                <div className='flex'>
+                    <div className='w-1/2'>
+                        <FunStats amount={totalLiters} unity='l' label='Litres de bière écoulé'></FunStats>
+                    </div>
+                    <div className='w-1/2'>
+                        <FunStats amount={totalEmptyWeight} unity='kg' label='Poids total des vidanges'></FunStats>
+                    </div>
+                </div>
+                <div className='mt-5'>
+                <Graph orders={orders} />
+                </div>
+            </div>
         </div>
     );
-
 
 };
 
