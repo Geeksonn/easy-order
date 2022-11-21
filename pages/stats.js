@@ -20,13 +20,8 @@ const Stats = () => {
     const initializeData = async () => {
         await setOrders(await listOrders({edition: "2022-05"}));
         orders.forEach(x => totalDrinks = (totalDrinks +   x.items.length));
-
-        console.log("total drinks", totalDrinks);
         setLiters(Math.round(totalDrinks / 3));
         setEmptyWeight(Math.round(totalDrinks / 4));
-
-        console.log("total liters", totalLiters);
-        console.log("total emptyWeight", totalEmptyWeight);
     }
 
     return (
@@ -37,10 +32,10 @@ const Stats = () => {
             <div className='w-2/3 flex flex-col'>
                 <div className='flex'>
                     <div className='w-1/2'>
-                        <FunStats amount={totalLiters} unity='l' label='Litres de bière écoulé'></FunStats>
+                        <FunStats amount={totalLiters} unity='L' label='Litres de bière écoulé'></FunStats>
                     </div>
                     <div className='w-1/2'>
-                        <FunStats amount={totalEmptyWeight} unity='kg' label='Poids total des vidanges'></FunStats>
+                        <FunStats amount={totalEmptyWeight} unity='Kg' label='Poids total des vidanges'></FunStats>
                     </div>
                 </div>
                 <div className='mt-5'>

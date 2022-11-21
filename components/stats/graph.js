@@ -1,10 +1,10 @@
 // ./components/LineChart.js
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import Chart from "chart.js/auto";
 import {Line} from "react-chartjs-2";
-import {listOrders} from "@lib/orders/orders";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import css from '@styles/stats.module.css'
 
 const Graph = ({orders}) => {
 
@@ -21,10 +21,6 @@ const Graph = ({orders}) => {
     };
 
     const options = {
-
-        layout: {
-            margin: 200
-        },
         scales: {
             y: {
                 beginAtZero: true,
@@ -75,6 +71,20 @@ const Graph = ({orders}) => {
         initializeGraph()
     }, [orders.length]);
 
+    function extractValues(orderdedCommandes) {
+        let values = Array.from(orderdedCommandes.values());
+        console.log('values', values);
+        while (values[values.length - 1] === 0) { // While the last element is a 0,
+            values.pop();                  // Remove that last element
+        }
+        return values;
+    }
+
+    function extractLabels(orderdedCommandes) {
+        return Array.from(orderdedCommandes.keys()).map(x => addMinutes(startingDate, 30 * x))
+            .map(x => new Date(x).getHours() + ": " + (new Date(x).getMinutes() > 9 ? new Date(x).getMinutes() : "0" + new Date(x).getMinutes()));
+    }
+
     const initializeGraph = () => {
         orders.map(order => addToMap(order));
         for (let counter = 0; counter < 22 ; counter++){
@@ -85,12 +95,10 @@ const Graph = ({orders}) => {
         }
         //console.log("data:", ordersMap);
         //On trie celon le nombre de ordersMap
-        const orderdedCommandes = new Map([...ordersMap.entries()].sort((a, b) => a[0] - b[0]));
+        const sortedOrders = new Map([...ordersMap.entries()].sort((a, b) => a[0] - b[0]));
+        const labels = extractLabels(sortedOrders);
+        let values = extractValues(sortedOrders);
 
-        const labels = Array.from(orderdedCommandes.keys()).map(x => addMinutes(startingDate, 30 * x))
-            .map(x => new Date(x).getHours() +  ": " + (new Date(x).getMinutes() > 9 ?  new Date(x).getMinutes() :  "0" + new Date(x).getMinutes()));
-
-        // console.log("ordersMap:", Array.from(orderdedCommandes.values()));
         setData({
             labels: labels,
             datasets: [
@@ -105,7 +113,7 @@ const Graph = ({orders}) => {
                     pointBorderWidth: 3,
                     pointRadius: 8,
                     borderColor: "rgb(230,94,68)",
-                    data: Array.from(orderdedCommandes.values()),
+                    data: Array.from(values),
                 },
             ],
 
@@ -119,10 +127,13 @@ const Graph = ({orders}) => {
     }
 
     const addToMap = (order) => {
+      //  if (new Date(order.date) < new Date (2022, 4, 21, 19, 0, 0)) {
+
             var minutes = dateDiffInHours(new Date(order.date), new Date(startingDate));
             //half hour
             var key = Math.round(minutes / 30);
             ordersMap.set(key, (ordersMap.has(key) ? ordersMap.get(key) : 0) + order.items.length);
+    //    }
     }
 
     function dateDiffInHours(a, b) {
@@ -140,14 +151,16 @@ const Graph = ({orders}) => {
 
     Chart.register(ChartDataLabels);
     return (
-        <div>
-            <h1>Bières commandées</h1>
-        <div>
-            {Object.keys(data).length > 0 ?
-                <Line options={options} data={data} plugins={plugin} />
-                : null}
+        <div className={css.graph}>
+            <div>
+                <h1 className={css.graphTitle}>Bières commandées</h1>
+                <div>
+                    {Object.keys(data).length > 0 ?
+                        <Line options={options} data={data} plugins={plugin}/>
+                        : null}
 
-        </div>
+                </div>
+            </div>
         </div>
     );
 
