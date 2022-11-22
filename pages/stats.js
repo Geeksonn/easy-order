@@ -1,50 +1,40 @@
-// ./components/LineChart.js
-
 import React from 'react';
-import Graph from "@components/stats/graph";
-import Ranking from "@components/stats/ranking";
-import FunStats from "@components/stats/funStats";
-import {listOrders} from "@lib/orders/orders";
 
+import { listOrders } from '@lib/orders/orders';
+
+import StateContext from '@context/stateContext';
+
+import StatsPage from '@components/stats/statsPage';
+import Login from '@components/login';
 
 const Stats = () => {
-    let totalDrinks = 0;
+    const { stateCtx } = React.useContext(StateContext);
+
     const [orders, setOrders] = React.useState([]);
     const [totalLiters, setLiters] = React.useState(0);
     const [totalEmptyWeight, setEmptyWeight] = React.useState(0);
-    //
+
+    const authed = stateCtx.state.user ? true : false;
+    const child = authed ? (
+        <StatsPage orders={orders} totalLiters={totalLiters} totalEmptyWeight={totalEmptyWeight} />
+    ) : (
+        <Login />
+    );
+
     React.useEffect(() => {
-        initializeData()
+        initializeData();
     }, [JSON.stringify(orders)]);
 
     const initializeData = async () => {
-        await setOrders(await listOrders({edition: "2022-05"}));
-        orders.forEach(x => totalDrinks = (totalDrinks +   x.items.length));
+        const ordersData = await listOrders({ edition: '2022-05' });
+        const totalDrinks = ordersData.reduce((prev, curr) => prev + curr.items.length, 0);
+
+        setOrders(ordersData);
         setLiters(Math.round(totalDrinks / 3));
         setEmptyWeight(Math.round(totalDrinks / 4));
-    }
+    };
 
-    return (
-        <div className='flex'>
-            <div className='w-1/3 mr-5'>
-            <Ranking orders={orders}/>
-            </div>
-            <div className='w-2/3 flex flex-col'>
-                <div className='flex'>
-                    <div className='w-1/2'>
-                        <FunStats amount={totalLiters} unity='L' label='Litres de bière écoulé'></FunStats>
-                    </div>
-                    <div className='w-1/2'>
-                        <FunStats amount={totalEmptyWeight} unity='Kg' label='Poids total des vidanges'></FunStats>
-                    </div>
-                </div>
-                <div className='mt-5'>
-                <Graph orders={orders} />
-                </div>
-            </div>
-        </div>
-    );
-
+    return child;
 };
 
 export default Stats;

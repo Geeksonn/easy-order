@@ -17,7 +17,6 @@ module.exports = {
                 'red': '#E65E44',
                 'dark-beige': '#F5F4F0',
                 'bar-grey': '#D5D5D5'
-
             },
             width: {
                 icon: '1.25rem',
@@ -27,7 +26,7 @@ module.exports = {
             },
         },
         fontFamily: {
-            body: ['Inter', 'sans-serif'],
+            body: ['aktiv-grotesk', 'sans-serif'],
             title: ['new-spirit', 'serif'],
         },
     },

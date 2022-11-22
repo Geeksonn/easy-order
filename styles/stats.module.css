@@ -1,53 +1,66 @@
-.rankingItem{
-  @apply flex items-center px-11 py-2 text-dark-green
-}
-.rankingItemOne{
-    @apply flex items-center px-10 py-2 text-dark-green bg-orange
+/* Ranking Item (<li> element) */
+
+.listItem {
+    @apply flex items-center px-4 py-2 text-dark-green;
 }
 
-.itemWrapper{
-    @apply flex justify-between w-full border-b border-b-bar-grey pb-3
-}
-.itemWrapperOne{
-    @apply flex justify-between w-full pb-3
+.listItemPodium {
+    @apply bg-orange;
 }
 
-.itemName, .itemNumber{
-    @apply font-medium text-2xl
+.itemContainer {
+    @apply flex justify-between items-center w-full py-2 border-b border-bar-grey;
 }
 
-.itemName{
-    @apply font-title
-
-}
-.itemNameOne{
-    @apply font-medium text-4xl font-title
-}
-.itemNamePodium{
-    @apply font-medium text-3xl font-title
+.itemContainerPodium {
+    @apply border-b-0;
 }
 
-
-.rankingPosition{
-    @apply w-10 h-10 flex items-center rounded-full bg-white mr-10 justify-around font-light text-xl px-1
+.itemName {
+    @apply font-title font-medium;
 }
 
-.funStatBlock{
-    @apply mt-16 m-5 bg-white font-bold rounded-2xl
-}
-.funStatAmount{
-    @apply text-9xl text-pink  pl-11 pb-11 -mt-16 pr-2
-}
-.funStatLabel{
-    @apply items-center px-11 py-11 text-dark-green font-medium text-2xl
-}
-.funStatUnity{
-    @apply text-dark-green font-medium text-2xl text-opacity-50
+.position {
+    @apply flex items-center justify-center mx-auto;
+    @apply rounded-full font-light;
 }
 
-.graph{
-    @apply mr-8
+.posNormal {
+    @apply w-10 h-10 bg-white text-xl;
 }
-.graphTitle{
-    @apply ml-9 mt-9 mb-3
+
+.posPodium {
+    @apply w-16 h-16 bg-white text-3xl;
+}
+
+.posFirst {
+    @apply w-20 h-20 bg-dark-green border-4 border-white;
+    @apply text-orange font-bold text-4xl;
+}
+
+/* Fun Stat */
+
+
+.funStatWrapper {
+    @apply mt-16 pl-12 pr-24 pb-12 bg-white font-bold rounded-2xl;
+}
+
+.funStatAmount {
+    @apply -mt-24 font-title text-[160px] text-pink;
+}
+
+.funStatUnit {
+    @apply text-dark-green font-medium text-2xl text-opacity-50;
+}
+
+.funStatLabel {
+    @apply items-center text-dark-green font-medium text-2xl;
+}
+
+
+.graph {
+    @apply mr-8;
+}
+.graphTitle {
+    @apply ml-9 mt-9 mb-3;
 }
