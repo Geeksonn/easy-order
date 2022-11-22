@@ -1,0 +1,53 @@
+.rankingItem{
+  @apply flex items-center px-11 py-2 text-dark-green
+}
+.rankingItemOne{
+    @apply flex items-center px-10 py-2 text-dark-green bg-orange
+}
+
+.itemWrapper{
+    @apply flex justify-between w-full border-b border-b-bar-grey pb-3
+}
+.itemWrapperOne{
+    @apply flex justify-between w-full pb-3
+}
+
+.itemName, .itemNumber{
+    @apply font-medium text-2xl
+}
+
+.itemName{
+    @apply font-title
+
+}
+.itemNameOne{
+    @apply font-medium text-4xl font-title
+}
+.itemNamePodium{
+    @apply font-medium text-3xl font-title
+}
+
+
+.rankingPosition{
+    @apply w-10 h-10 flex items-center rounded-full bg-white mr-10 justify-around font-light text-xl px-1
+}
+
+.funStatBlock{
+    @apply mt-16 m-5 bg-white font-bold rounded-2xl
+}
+.funStatAmount{
+    @apply text-9xl text-pink  pl-11 pb-11 -mt-16 pr-2
+}
+.funStatLabel{
+    @apply items-center px-11 py-11 text-dark-green font-medium text-2xl
+}
+.funStatUnity{
+    @apply text-dark-green font-medium text-2xl text-opacity-50
+}
+
+.graph{
+    @apply mr-8
+}
+.graphTitle{
+    @apply ml-9 mt-9 mb-3
+}
