@@ -12,15 +12,15 @@ const StatsPage = ({ orders, items, totalLiters, totalEmptyWeight }) => {
             </div>
             <div className='w-2/3 flex flex-col'>
                 <div className='flex justify-evenly'>
-                        <FunStats amount={totalLiters} unit='L' label='Litres de bière écoulés'></FunStats>
-                        <FunStats amount={totalEmptyWeight} unit='Kg' label='Poids total des vidanges'></FunStats>
+                    <FunStats amount={totalLiters} unit='L' label='Litres de bière écoulés'></FunStats>
+                    <FunStats amount={totalEmptyWeight} unit='Kg' label='Poids total des vidanges'></FunStats>
                 </div>
                 <div className='mt-5'>
                     <Graph orders={orders} />
                 </div>
             </div>
         </div>
-    )
+    );
 };
 
 export default StatsPage;

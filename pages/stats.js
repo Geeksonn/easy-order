@@ -6,8 +6,8 @@ import StateContext from '@context/stateContext';
 
 import StatsPage from '@components/stats/statsPage';
 import Login from '@components/login';
-import {listEditions} from "@lib/editions/editions";
-import {listItems} from "@lib/items/items";
+import { listEditions } from '@lib/editions/editions';
+import { listItems } from '@lib/items/items';
 
 const Stats = () => {
     const { stateCtx } = React.useContext(StateContext);
@@ -30,7 +30,7 @@ const Stats = () => {
     }, [JSON.stringify(orders)]);
 
     //ça c'est duplicated
-    const getEditions = async() => {
+    const getEditions = async () => {
         const editions = await listEditions();
         if (editions.error) {
             // TODO Toast
@@ -38,27 +38,26 @@ const Stats = () => {
         } else {
             return editions;
         }
-    }
+    };
 
     //ça c'est duplicated
-    const getItems = async() => {
+    const getItems = async () => {
         const editions = await getEditions();
         const activeEdition = editions.find((ed) => ed.active === true);
         setActiveEdition(activeEdition);
 
-        const items = await listItems({ edition: activeEdition.name});
+        const items = await listItems({ edition: activeEdition.name });
         if (items.error) {
             // TODO Toast or somethign
             console.error(items.error);
-        }
-        else {
+        } else {
             setItems(items);
         }
-    }
+    };
 
     const initializeData = async () => {
         await getItems();
-        const ordersData = await listOrders({ edition: activeEdition});
+        const ordersData = await listOrders({ edition: activeEdition.name });
         const totalDrinks = ordersData.reduce((prev, curr) => prev + curr.items.length, 0);
         setOrders(ordersData);
         setLiters(Math.round(totalDrinks / 3));

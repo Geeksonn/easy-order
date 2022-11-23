@@ -12,7 +12,7 @@ const Ranking = ({ orders, items }) => {
         let listItems = [];
         let i = 0;
 
-        items.forEach(x => ordersMap.set(x.name, 0));
+        items.forEach((x) => ordersMap.set(x.name, 0));
         orders.forEach((order) => order.items.forEach((item) => addToMap(item.name)));
         const sortedOrders = new Map([...ordersMap.entries()].sort((a, b) => b[1] - a[1]));
         sortedOrders.forEach((value, key) =>
