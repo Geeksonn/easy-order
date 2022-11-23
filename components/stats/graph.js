@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Chart from 'chart.js/auto';
-import { Line } from 'react-chartjs-2';
+import {Line} from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import css from '@styles/stats.module.css';
@@ -26,7 +26,7 @@ const Graph = ({ orders }) => {
                 ticks: {
                     padding: 40,
                 },
-                max: 60,
+                suggestedMax: 15
             },
             x: {
                 position: 'top',
@@ -45,6 +45,7 @@ const Graph = ({ orders }) => {
                 borderWidth: 2,
                 padding: 8,
                 borderColor: 'rgb(237,237,237)',
+                backgroundColor: 'rgb(255,255,255)',
                 borderRadius: 10,
                 clamp: true,
                 font: {
@@ -69,31 +70,35 @@ const Graph = ({ orders }) => {
     }, [orders.length]);
 
     function extractValues(orderdedCommandes) {
-        let values = Array.from(orderdedCommandes.values());
-        while (values[values.length - 1] === 0) {
-            // While the last element is a 0,
-            values.pop(); // Remove that last element
-        }
-        return values;
+        return Array.from(orderdedCommandes.values());
     }
 
     function extractLabels(orderdedCommandes) {
+        function extractTimeLabel(x) {
+            return new Date(x).getHours() +
+                ': ' +
+                (new Date(x).getMinutes() > 9 ? new Date(x).getMinutes() : '0' + new Date(x).getMinutes())
+        }
+
         return Array.from(orderdedCommandes.keys())
             .map((x) => addMinutes(startingDate, 30 * x))
             .map(
-                (x) =>
-                    new Date(x).getHours() +
-                    ': ' +
-                    (new Date(x).getMinutes() > 9 ? new Date(x).getMinutes() : '0' + new Date(x).getMinutes())
+                (x) => {
+                    if (new Date(x).getMinutes() !== 30) {
+                        return extractTimeLabel(x);
+                    } else {
+                        return '';
+                    }
+                }
             );
     }
 
     const initializeGraph = () => {
         orders.map((order) => addToMap(order));
-        for (let counter = 0; counter < 22; counter++) {
-            if (ordersMap.get(counter) === undefined) {
-                //  console.log("counter added: " , counter);
-                ordersMap.set(counter, 0);
+        let max = Array.from(ordersMap.keys()).reduce((a, b) => Math.max(a, b), -Infinity);
+        for (let i = 0; i < max; i++){
+            if (ordersMap.get(i) === undefined) {
+                ordersMap.set(i, 0);
             }
         }
         //console.log("data:", ordersMap);
@@ -128,20 +133,16 @@ const Graph = ({ orders }) => {
     }
 
     const addToMap = (order) => {
-        //  if (new Date(order.date) < new Date (2022, 4, 21, 19, 0, 0)) {
-
-        var minutes = dateDiffInHours(new Date(order.date), new Date(startingDate));
+         //if (new Date(order.date) < new Date (2022, 4, 21, 18 , 50, 0)) {
+        var minutes = dateDiffInMinutes(new Date(order.date), new Date(startingDate));
         //half hour
-        var key = Math.round(minutes / 30);
+        var key = Math.floor(minutes / 30);
         ordersMap.set(key, (ordersMap.has(key) ? ordersMap.get(key) : 0) + order.items.length);
-        //    }
+     //       }
     };
 
-    function dateDiffInHours(a, b) {
+    function dateDiffInMinutes(a, b) {
         const MS = 1000 * 60;
-
-        //   console.log("Dates", new Date(a), " " , new Date(b), ", diff, ", new Date(a) - new Date(b));;
-        // Discard the time and time-zone information.
         let diffMs = new Date(a) - new Date(b);
         // console.log("diffMs: ", diffMs);
         return Math.round(diffMs / MS);

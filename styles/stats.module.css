@@ -30,7 +30,7 @@
 }
 
 .posPodium {
-    @apply w-16 h-16 bg-white text-3xl;
+    @apply w-16 h-16 bg-white text-3xl font-bold;
 }
 
 .posFirst {
