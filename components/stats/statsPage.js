@@ -13,50 +13,28 @@ const StatsPage = () => {
     const [totalLiters, setLiters] = React.useState(0);
     const [totalEmptyWeight, setEmptyWeight] = React.useState(0);
     const [items, setItems] = React.useState([]);
-    const [activeEdition, setActiveEdition] = React.useState();
 
     React.useEffect(() => {
         const interval = setInterval(initializeData, 5000);
-        
+
         return () => clearInterval(interval);
     }, [JSON.stringify(orders)]);
 
-    //ça c'est duplicated
-    const getEditions = async () => {
-        const editions = await listEditions();
-        if (editions.error) {
-            // TODO Toast
-            console.error(editions.error);
-        } else {
-            return editions;
-        }
-    };
-
-    //ça c'est duplicated
-    const getItems = async () => {
-        const editions = await getEditions();
-        const active = editions.find((ed) => ed.active === true);
-        setActiveEdition(active);
-
-        const items = await listItems({ edition: active.name });
-        if (items.error) {
-            // TODO Toast or somethign
-            console.error(items.error);
-        } else {
-            setItems(items);
-        }
-    };
-
     const initializeData = async () => {
-        await getItems();
-        const ordersData = await listOrders({ edition: activeEdition.name });
+        // TODO Error
+        const editions = await listEditions();
+        const active = editions.find((ed) => ed.active === true);
+        const items = await listItems({ edition: active.name });
+        const ordersData = await listOrders({ edition: active.name });
         const totalDrinks = ordersData.reduce((prev, curr) => prev + curr.items.length, 0);
+
+        setItems(items);
         setOrders(ordersData);
         setLiters(Math.round(totalDrinks / 3));
         setEmptyWeight(Math.round(totalDrinks / 4));
     };
 
-    return (
+    return items.length > 0 ? (
         <div className='flex'>
             <div className='w-1/3 bg-dark-beige h-screen'>
                 <Ranking orders={orders} items={items} />
@@ -71,6 +49,8 @@ const StatsPage = () => {
                 </div>
             </div>
         </div>
+    ) : (
+        <div>Loading ...</div>
     );
 };
 
