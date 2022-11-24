@@ -11,7 +11,6 @@ const Document = () => {
                     rel='stylesheet'
                 />
                 <link rel='stylesheet' href='https://use.typekit.net/jys2xij.css' />
-                <title>Brassicole</title>
             </Head>
             <body>
             <Main />
