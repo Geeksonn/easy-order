@@ -23,7 +23,7 @@ const Ranking = ({ orders, items }) => {
 
     return (
         <div>
-            <ol className='bg-dark-beige'>{buildJsx()}</ol>
+            <ol>{buildJsx()}</ol>
         </div>
     );
 };

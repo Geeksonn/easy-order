@@ -1,7 +1,7 @@
 /* Ranking Item (<li> element) */
 
 .listItem {
-    @apply flex items-center px-4 py-2 text-dark-green;
+    @apply flex items-center px-4 py-[18px] text-dark-green;
 }
 
 .listItemPodium {
@@ -26,15 +26,15 @@
 }
 
 .posNormal {
-    @apply w-10 h-10 bg-white text-xl;
+    @apply w-10 h-10 bg-white text-xl pt-1;
 }
 
 .posPodium {
-    @apply w-16 h-16 bg-white text-3xl font-bold;
+    @apply w-16 h-16 bg-white text-3xl font-bold pt-1;
 }
 
 .posFirst {
-    @apply w-20 h-20 bg-dark-green border-4 border-white;
+    @apply w-20 h-20 pt-1 bg-dark-green border-4 border-white;
     @apply text-orange font-bold text-4xl;
 }
 

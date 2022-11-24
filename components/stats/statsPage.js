@@ -58,7 +58,7 @@ const StatsPage = () => {
 
     return (
         <div className='flex'>
-            <div className='w-1/3'>
+            <div className='w-1/3 bg-dark-beige h-screen'>
                 <Ranking orders={orders} items={items} />
             </div>
             <div className='w-2/3 flex flex-col'>
