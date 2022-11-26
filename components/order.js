@@ -65,13 +65,21 @@ const Order = () => {
     };
 
     const order = () => {
+        const orderItems = cart.map((it) => {
+            return {
+                _id: it._id,
+                currency: it.currency,
+                image: it.image,
+                price: it.price
+            }
+        });
         if (cart.length === 0) {
             console.log('Nothing to order');
         } else {
             const order = {
                 totalPrice: cart.map((it) => it.price).reduce((prev, curr) => prev + curr, 0),
                 currency: cart[0].currency,
-                items: cart,
+                items: orderItems,
                 date: new Date(),
                 edition: activeEdition.name
             };
