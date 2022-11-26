@@ -68,6 +68,7 @@ const Order = () => {
         const orderItems = cart.map((it) => {
             return {
                 _id: it._id,
+                name: it.name,
                 currency: it.currency,
                 image: it.image,
                 price: it.price
