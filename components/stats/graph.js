@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Chart from 'chart.js/auto';
-import {Line} from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import css from '@styles/stats.module.css';
@@ -26,7 +26,7 @@ const Graph = ({ orders }) => {
                 ticks: {
                     padding: 40,
                 },
-                suggestedMax: 15
+                suggestedMax: 15,
             },
             x: {
                 position: 'top',
@@ -61,7 +61,6 @@ const Graph = ({ orders }) => {
     };
 
     const ordersMap = new Map();
-    let startingDate = new Date(2022, 4, 21, 18, 0);
 
     const [data, setData] = React.useState([]);
 
@@ -69,86 +68,31 @@ const Graph = ({ orders }) => {
         initializeGraph();
     }, [orders.length]);
 
-    function extractValues(orderdedCommandes) {
-        return Array.from(orderdedCommandes.values());
-    }
-
-    function extractLabels(orderdedCommandes) {
-        function extractTimeLabel(x) {
-            return new Date(x).getHours() +
-                ': ' +
-                (new Date(x).getMinutes() > 9 ? new Date(x).getMinutes() : '0' + new Date(x).getMinutes())
-        }
-
-        return Array.from(orderdedCommandes.keys())
-            .map((x) => addMinutes(startingDate, 30 * x))
-            .map(
-                (x) => {
-                    if (new Date(x).getMinutes() !== 30) {
-                        return extractTimeLabel(x);
-                    } else {
-                        return '';
-                    }
-                }
-            );
-    }
-
     const initializeGraph = () => {
-        orders.map((order) => addToMap(order));
-        let max = Array.from(ordersMap.keys()).reduce((a, b) => Math.max(a, b), -Infinity);
-        for (let i = 0; i < max; i++){
-            if (ordersMap.get(i) === undefined) {
-                ordersMap.set(i, 0);
-            }
-        }
-        //console.log("data:", ordersMap);
-        //On trie celon le nombre de ordersMap
-        const sortedOrders = new Map([...ordersMap.entries()].sort((a, b) => a[0] - b[0]));
-        const labels = extractLabels(sortedOrders);
-        let values = extractValues(sortedOrders);
 
+        orders.forEach((order) => {
+            const orderDate = new Date(order.date);
+            const orderMinutes = orderDate.getMinutes < 30 ? 0 : 30;
+            const key = orderDate.getHours() + ':' + orderMinutes;
+
+            ordersMap.set(key, (ordersMap.has(key) ? ordersMap.get(key) : 0) + order.items.length);
+        });
+        
         setData({
-            labels: labels,
+            labels: Array.from(ordersMap.keys()),
             datasets: [
                 {
                     label: 'Consommations',
-                    backgroundColor:
-                        // ['rgb(0, 67, 53)',
-                        // 'rgb(238, 164, 200)',
-                        'rgb(255,255,255)',
-                    // ["rgb(230,94,68)"],
+                    backgroundColor: 'rgb(255,255,255)',
                     borderWidth: 3,
                     pointBorderWidth: 3,
                     pointRadius: 8,
                     borderColor: 'rgb(230,94,68)',
-                    data: Array.from(values),
+                    data: Array.from(ordersMap.values()),
                 },
             ],
         });
     };
-
-    function addMinutes(date, minutes) {
-        //    console.log(new Date(new Date(date).getTime() + minutes*60000));
-        return new Date(new Date(date).getTime() + minutes * 60000);
-    }
-
-    const addToMap = (order) => {
-         //if (new Date(order.date) < new Date (2022, 4, 21, 18 , 50, 0)) {
-        var minutes = dateDiffInMinutes(new Date(order.date), new Date(startingDate));
-        //half hour
-        var key = Math.floor(minutes / 30);
-        ordersMap.set(key, (ordersMap.has(key) ? ordersMap.get(key) : 0) + order.items.length);
-     //       }
-    };
-
-    function dateDiffInMinutes(a, b) {
-        const MS = 1000 * 60;
-        let diffMs = new Date(a) - new Date(b);
-        // console.log("diffMs: ", diffMs);
-        return Math.round(diffMs / MS);
-    }
-
-    // setTimeout(() => window.open("/stats", "_self"), 5000);
 
     Chart.register(ChartDataLabels);
     return (
