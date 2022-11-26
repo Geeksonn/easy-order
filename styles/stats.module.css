@@ -1,7 +1,7 @@
 /* Ranking Item (<li> element) */
 
 .listItem {
-    @apply flex items-center px-4 py-[18px] text-dark-green;
+    @apply flex items-center px-4 py-3.5 text-dark-green;
 }
 
 .listItemPodium {
