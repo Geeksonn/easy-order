@@ -2,14 +2,7 @@ import React from 'react';
 
 import css from '@styles/dataTable.module.css';
 
-const DataTable = ({
-    headers,
-    rows,
-    primaryAction,
-    secondaryAction,
-    primaryActionName = 'edit',
-    secondaryActionName = 'delete',
-}) => {
+const DataTable = ({ headers, rows }) => {
     const buildHeading = () => {
         return (
             <thead>
