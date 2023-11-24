@@ -8,9 +8,10 @@ import Login from '@components/login';
 const Stats = () => {
     const { stateCtx } = React.useContext(StateContext);
 
-    const authed = stateCtx.state.user ? true : false;
+    //const authed = stateCtx.state.user ? true : false;
 
-    return authed ? <StatsPage /> : <Login />;
+    //return authed ? <StatsPage /> : <Login />;
+    return <StatsPage />;
 };
 
 export default Stats;
